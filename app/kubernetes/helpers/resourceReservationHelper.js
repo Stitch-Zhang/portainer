@@ -26,7 +26,7 @@ class KubernetesResourceReservationHelper {
   }
 
   static parseCPU(cpu) {
-    let res = parseInt(cpu, 10);
+    let res = parseInt(cpu);
     if (_.endsWith(cpu, 'm')) {
       res /= 1000;
     }

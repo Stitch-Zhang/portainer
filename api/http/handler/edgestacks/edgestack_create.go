@@ -11,26 +11,12 @@ import (
 	httperror "github.com/portainer/libhttp/error"
 	"github.com/portainer/libhttp/request"
 	"github.com/portainer/libhttp/response"
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/filesystem"
 	"github.com/portainer/portainer/api/internal/edge"
 )
 
-// @id EdgeStackCreate
-// @summary Create an EdgeStack
-// @description
-// @tags edge_stacks
-// @security jwt
-// @accept json
-// @produce json
-// @param method query string true "Creation Method" Enums(file,string,repository)
-// @param body_string body swarmStackFromFileContentPayload true "Required when using method=string"
-// @param body_file body swarmStackFromFileUploadPayload true "Required when using method=file"
-// @param body_repository body swarmStackFromGitRepositoryPayload true "Required when using method=repository"
-// @success 200 {object} portainer.EdgeStack
-// @failure 500
-// @failure 503 Edge compute features are disabled
-// @router /edge_stacks [post]
+// POST request on /api/endpoint_groups
 func (handler *Handler) edgeStackCreate(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	method, err := request.RetrieveQueryParameter(r, "method", false)
 	if err != nil {
@@ -89,12 +75,9 @@ func (handler *Handler) createSwarmStack(method string, r *http.Request) (*porta
 }
 
 type swarmStackFromFileContentPayload struct {
-	// Name of the stack
-	Name string `example:"myStack" validate:"required"`
-	// Content of the Stack file
-	StackFileContent string `example:"version: 3\n services:\n web:\n image:nginx" validate:"required"`
-	// List of identifiers of EdgeGroups
-	EdgeGroups []portainer.EdgeGroupID `example:"1"`
+	Name             string
+	StackFileContent string
+	EdgeGroups       []portainer.EdgeGroupID
 }
 
 func (payload *swarmStackFromFileContentPayload) Validate(r *http.Request) error {
@@ -149,22 +132,14 @@ func (handler *Handler) createSwarmStackFromFileContent(r *http.Request) (*porta
 }
 
 type swarmStackFromGitRepositoryPayload struct {
-	// Name of the stack
-	Name string `example:"myStack" validate:"required"`
-	// URL of a Git repository hosting the Stack file
-	RepositoryURL string `example:"https://github.com/openfaas/faas" validate:"required"`
-	// Reference name of a Git repository hosting the Stack file
-	RepositoryReferenceName string `example:"refs/heads/master"`
-	// Use basic authentication to clone the Git repository
-	RepositoryAuthentication bool `example:"true"`
-	// Username used in basic authentication. Required when RepositoryAuthentication is true.
-	RepositoryUsername string `example:"myGitUsername"`
-	// Password used in basic authentication. Required when RepositoryAuthentication is true.
-	RepositoryPassword string `example:"myGitPassword"`
-	// Path to the Stack file inside the Git repository
-	ComposeFilePathInRepository string `example:"docker-compose.yml" default:"docker-compose.yml"`
-	// List of identifiers of EdgeGroups
-	EdgeGroups []portainer.EdgeGroupID `example:"1"`
+	Name                        string
+	RepositoryURL               string
+	RepositoryReferenceName     string
+	RepositoryAuthentication    bool
+	RepositoryUsername          string
+	RepositoryPassword          string
+	ComposeFilePathInRepository string
+	EdgeGroups                  []portainer.EdgeGroupID
 }
 
 func (payload *swarmStackFromGitRepositoryPayload) Validate(r *http.Request) error {

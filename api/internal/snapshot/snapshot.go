@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 )
 
 // Service repesents a service to manage endpoint snapshots.
@@ -48,9 +48,7 @@ func (service *Service) stop() {
 		return
 	}
 
-	// clear refreshSignal to mark the service as disabled
 	close(service.refreshSignal)
-	service.refreshSignal = nil
 }
 
 // SetSnapshotInterval sets the snapshot interval and resets the service

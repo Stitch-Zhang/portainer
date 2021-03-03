@@ -1,4 +1,4 @@
-import _ from 'lodash-es';
+import * as _ from 'lodash-es';
 import filesizeParser from 'filesize-parser';
 
 import {
@@ -300,7 +300,7 @@ class KubernetesApplicationConverter {
     formValues.ApplicationOwner = KubernetesCommonHelper.ownerToLabel(formValues.ApplicationOwner);
 
     const claims = KubernetesPersistentVolumeClaimConverter.applicationFormValuesToVolumeClaims(formValues);
-    const rwx = KubernetesApplicationHelper.hasRWX(claims);
+    const rwx = _.find(claims, (item) => _.includes(item.StorageClass.AccessModes, 'RWX')) !== undefined;
 
     const deployment =
       (formValues.DeploymentType === KubernetesApplicationDeploymentTypes.REPLICATED &&

@@ -7,26 +7,12 @@ import (
 	httperror "github.com/portainer/libhttp/error"
 	"github.com/portainer/libhttp/request"
 	"github.com/portainer/libhttp/response"
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 	bolterrors "github.com/portainer/portainer/api/bolt/errors"
 	"github.com/portainer/portainer/api/http/security"
 )
 
-// @id UserDelete
-// @summary Remove a user
-// @description Remove a user.
-// @description **Access policy**: administrator
-// @tags users
-// @security jwt
-// @accept json
-// @produce json
-// @param id path int true "User identifier"
-// @success 204 "Success"
-// @failure 400 "Invalid request"
-// @failure 403 "Permission denied"
-// @failure 404 "User not found"
-// @failure 500 "Server error"
-// @router /users/{id} [delete]
+// DELETE request on /api/users/:id
 func (handler *Handler) userDelete(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	userID, err := request.RetrieveNumericRouteVariableValue(r, "id")
 	if err != nil {

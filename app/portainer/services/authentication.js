@@ -1,5 +1,3 @@
-import { clear as clearSessionStorage } from './session-storage';
-
 angular.module('portainer.app').factory('Authentication', [
   '$async',
   '$state',
@@ -40,7 +38,6 @@ angular.module('portainer.app').factory('Authentication', [
         await Auth.logout().$promise;
       }
 
-      clearSessionStorage();
       StateManager.clean();
       EndpointProvider.clean();
       LocalStorage.cleanAuthData();

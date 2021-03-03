@@ -26,24 +26,8 @@ class EndpointItemController {
     return _.join(tagNames, ',');
   }
 
-  isEdgeEndpoint() {
-    return this.model.Type === 4 || this.model.Type === 7;
-  }
-
-  calcIsCheckInValid() {
-    if (!this.isEdgeEndpoint()) {
-      return false;
-    }
-    const checkInInterval = this.model.EdgeCheckinInterval;
-    const now = Math.floor(Date.now() / 1000);
-
-    // give checkIn some wiggle room
-    return now - this.model.LastCheckInDate <= checkInInterval * 2;
-  }
-
   $onInit() {
     this.endpointTags = this.joinTags();
-    this.isCheckInValid = this.calcIsCheckInValid();
   }
 
   $onChanges({ tags, model }) {
@@ -51,10 +35,6 @@ class EndpointItemController {
       return;
     }
     this.endpointTags = this.joinTags();
-
-    if (model) {
-      this.isCheckInValid = this.calcIsCheckInValid();
-    }
   }
 }
 

@@ -7,16 +7,7 @@ import (
 	"github.com/portainer/libhttp/response"
 )
 
-// @id TagList
-// @summary List tags
-// @description List tags.
-// @description **Access policy**: administrator
-// @tags tags
-// @security jwt
-// @produce json
-// @success 200 {array} portainer.Tag "Success"
-// @failure 500 "Server error"
-// @router /tags [get]
+// GET request on /api/tags
 func (handler *Handler) tagList(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	tags, err := handler.DataStore.Tag().Tags()
 	if err != nil {

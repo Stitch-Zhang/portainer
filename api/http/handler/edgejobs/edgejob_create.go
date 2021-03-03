@@ -11,23 +11,10 @@ import (
 	httperror "github.com/portainer/libhttp/error"
 	"github.com/portainer/libhttp/request"
 	"github.com/portainer/libhttp/response"
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 )
 
-// @id EdgeJobCreate
-// @summary Create an EdgeJob
-// @description
-// @tags edge_jobs
-// @security jwt
-// @accept json
-// @produce json
-// @param method query string true "Creation Method" Enums(file, string)
-// @param body body edgeJobCreateFromFileContentPayload true "EdgeGroup data when method is string"
-// @param body body edgeJobCreateFromFilePayload true "EdgeGroup data when method is file"
-// @success 200 {object} portainer.EdgeGroup
-// @failure 503 Edge compute features are disabled
-// @failure 500
-// @router /edge_jobs [post]
+// POST /api/edge_jobs?method=file|string
 func (handler *Handler) edgeJobCreate(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	method, err := request.RetrieveQueryParameter(r, "method", false)
 	if err != nil {

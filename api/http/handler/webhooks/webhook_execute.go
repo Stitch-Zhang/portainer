@@ -10,20 +10,11 @@ import (
 	httperror "github.com/portainer/libhttp/error"
 	"github.com/portainer/libhttp/request"
 	"github.com/portainer/libhttp/response"
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 	bolterrors "github.com/portainer/portainer/api/bolt/errors"
 )
 
-// @summary Execute a webhook
-// @description Acts on a passed in token UUID to restart the docker service
-// @tags webhooks
-// @accept json
-// @produce json
-// @param token path string true "Webhook token"
-// @success 202 "Webhook executed"
-// @failure 400
-// @failure 500
-// @router /webhooks/{token} [post]
+// Acts on a passed in token UUID to restart the docker service
 func (handler *Handler) webhookExecute(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 
 	webhookToken, err := request.RetrieveRouteVariableValue(r, "token")

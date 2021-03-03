@@ -6,7 +6,7 @@ import (
 	httperror "github.com/portainer/libhttp/error"
 	"github.com/portainer/libhttp/request"
 	"github.com/portainer/libhttp/response"
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/http/security"
 	"github.com/portainer/portainer/api/internal/authorization"
 )
@@ -16,20 +16,7 @@ type stackListOperationFilters struct {
 	EndpointID int    `json:"EndpointID"`
 }
 
-// @id StackList
-// @summary List stacks
-// @description List all stacks based on the current user authorizations.
-// @description Will return all stacks if using an administrator account otherwise it
-// @description will only return the list of stacks the user have access to.
-// @description **Access policy**: restricted
-// @tags stacks
-// @security jwt
-// @param filters query string false "Filters to process on the stack list. Encoded as JSON (a map[string]string). For example, {"SwarmID": "jpofkc0i9uo9wtx1zesuk649w"} will only return stacks that are part of the specified Swarm cluster. Available filters: EndpointID, SwarmID."
-// @success 200 {array} portainer.Stack "Success"
-// @success 204 "Success"
-// @failure 400 "Invalid request"
-// @failure 500 "Server error"
-// @router /stacks [get]
+// GET request on /api/stacks?(filters=<filters>)
 func (handler *Handler) stackList(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	var filters stackListOperationFilters
 	err := request.RetrieveJSONQueryParameter(r, "filters", &filters, true)

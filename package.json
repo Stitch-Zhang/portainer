@@ -2,7 +2,7 @@
   "author": "Portainer.io",
   "name": "portainer",
   "homepage": "http://portainer.io",
-  "version": "2.2.0",
+  "version": "2.1.0",
   "repository": {
     "type": "git",
     "url": "git@github.com:portainer/portainer.git"
@@ -20,8 +20,6 @@
     "build": "grunt clean:all && grunt build",
     "build:server": "grunt clean:server && grunt build:server",
     "build:client": "grunt clean:client && grunt build:client",
-    "prebuild:docs": "(! command -v swag &> /dev/null) && go get -u github.com/swaggo/swag/cmd/swag",
-    "build:docs": "cd api && swag init -g ./http/handler/handler.go --markdownFiles ./",
     "clean": "grunt clean:all",
     "start": "grunt start",
     "start:clean": "grunt clean:all && grunt start",
@@ -29,7 +27,6 @@
     "start:server": "grunt clean:server && grunt start:server",
     "start:client": "grunt clean:client && grunt start:client",
     "dev:client": "grunt clean:client && webpack-dev-server --config=./webpack/webpack.develop.js",
-    "dev:client:prod": "grunt clean:client && webpack-dev-server --config=./webpack/webpack.production.js",
     "dev:nodl": "grunt clean:server && grunt clean:client && grunt build:server && grunt copy:assets && grunt start:client",
     "start:toolkit": "grunt start:toolkit",
     "build:server:offline": "cd ./api/cmd/portainer && CGO_ENABLED=0 go build -a --installsuffix cgo --ldflags '-s' && mv -f portainer ../../../dist/portainer",
@@ -40,7 +37,6 @@
     "build": "Build the entire app (backend/frontend) in development mode",
     "build:server": "Build the backend",
     "build:client": "Build the frontend (development mode)",
-    "build:docs": "builds API docs",
     "clean": "Clean the entire dist folder",
     "start": "Build the entire app (backend/frontend) in development mode, run backend inside a container and start a watch process locally for the frontend files",
     "start:server": "Build the backend and run it inside a container",

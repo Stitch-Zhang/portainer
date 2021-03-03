@@ -4,27 +4,20 @@ import (
 	"net/http"
 
 	httperror "github.com/portainer/libhttp/error"
+	"github.com/portainer/libhttp/request"
 	"github.com/portainer/libhttp/response"
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/http/security"
 	"github.com/portainer/portainer/api/internal/authorization"
 )
 
-// @id CustomTemplateList
-// @summary List available custom templates
-// @description List available custom templates.
-// @description **Access policy**: authenticated
-// @tags custom_templates
-// @security jwt
-// @produce json
-// @success 200 {array} portainer.CustomTemplate "Success"
-// @failure 500 "Server error"
-// @router /custom_templates [get]
 func (handler *Handler) customTemplateList(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	customTemplates, err := handler.DataStore.CustomTemplate().CustomTemplates()
 	if err != nil {
 		return &httperror.HandlerError{http.StatusInternalServerError, "Unable to retrieve custom templates from the database", err}
 	}
+
+	stackType, _ := request.RetrieveNumericQueryParameter(r, "type", true)
 
 	resourceControls, err := handler.DataStore.ResourceControl().ResourceControls()
 	if err != nil {
@@ -32,6 +25,8 @@ func (handler *Handler) customTemplateList(w http.ResponseWriter, r *http.Reques
 	}
 
 	customTemplates = authorization.DecorateCustomTemplates(customTemplates, resourceControls)
+
+	customTemplates = filterTemplatesByEngineType(customTemplates, portainer.StackType(stackType))
 
 	securityContext, err := security.RetrieveRestrictedRequestContext(r)
 	if err != nil {
@@ -53,4 +48,20 @@ func (handler *Handler) customTemplateList(w http.ResponseWriter, r *http.Reques
 	}
 
 	return response.JSON(w, customTemplates)
+}
+
+func filterTemplatesByEngineType(templates []portainer.CustomTemplate, stackType portainer.StackType) []portainer.CustomTemplate {
+	if stackType == 0 {
+		return templates
+	}
+
+	filteredTemplates := []portainer.CustomTemplate{}
+
+	for _, template := range templates {
+		if template.Type == stackType {
+			filteredTemplates = append(filteredTemplates, template)
+		}
+	}
+
+	return filteredTemplates
 }

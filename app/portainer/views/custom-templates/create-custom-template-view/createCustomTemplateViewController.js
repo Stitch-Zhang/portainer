@@ -65,12 +65,12 @@ class CreateCustomTemplateViewController {
 
     this.state.actionInProgress = true;
     try {
-      const customTemplate = await this.createCustomTemplateByMethod(method);
+      const { ResourceControl } = await this.createCustomTemplateByMethod(method);
 
       const accessControlData = this.formValues.AccessControlData;
       const userDetails = this.Authentication.getUserDetails();
       const userId = userDetails.ID;
-      await this.ResourceControlService.applyResourceControl(userId, accessControlData, customTemplate.ResourceControl);
+      await this.ResourceControlService.applyResourceControl(userId, accessControlData, ResourceControl);
 
       this.Notifications.success('Custom template successfully created');
       this.$state.go('docker.templates.custom');

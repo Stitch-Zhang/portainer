@@ -10,19 +10,7 @@ import (
 	"github.com/portainer/portainer/api/bolt/errors"
 )
 
-// @id EndpointInspect
-// @summary Inspect an endpoint
-// @description Retrieve details about an endpoint.
-// @description **Access policy**: restricted
-// @tags endpoints
-// @security jwt
-// @produce json
-// @param id path int true "Endpoint identifier"
-// @success 200 {object} portainer.Endpoint "Success"
-// @failure 400 "Invalid request"
-// @failure 404 "Endpoint not found"
-// @failure 500 "Server error"
-// @router /endpoints/{id} [get]
+// GET request on /api/endpoints/:id
 func (handler *Handler) endpointInspect(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	endpointID, err := request.RetrieveNumericRouteVariableValue(r, "id")
 	if err != nil {

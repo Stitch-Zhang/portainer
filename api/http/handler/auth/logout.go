@@ -8,13 +8,7 @@ import (
 	"github.com/portainer/portainer/api/http/security"
 )
 
-// @id Logout
-// @summary Logout
-// @security jwt
-// @tags auth
-// @success 204 "Success"
-// @failure 500 "Server error"
-// @router /auth/logout [post]
+// POST request on /logout
 func (handler *Handler) logout(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	tokenData, err := security.RetrieveTokenData(r)
 	if err != nil {

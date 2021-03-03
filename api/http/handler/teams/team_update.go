@@ -6,36 +6,19 @@ import (
 	httperror "github.com/portainer/libhttp/error"
 	"github.com/portainer/libhttp/request"
 	"github.com/portainer/libhttp/response"
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/bolt/errors"
 )
 
 type teamUpdatePayload struct {
-	// Name
-	Name string `example:"developers"`
+	Name string
 }
 
 func (payload *teamUpdatePayload) Validate(r *http.Request) error {
 	return nil
 }
 
-// @id TeamUpdate
-// @summary Update a team
-// @description Update a team.
-// @description **Access policy**: administrator
-// @tags
-// @security jwt
-// @accept json
-// @produce json
-// @param id path int true "Team identifier"
-// @param body body teamUpdatePayload true "Team details"
-// @success 200 {object} portainer.Team "Success"
-// @success 204 "Success"
-// @failure 400 "Invalid request"
-// @failure 403 "Permission denied"
-// @failure 404 "Team not found"
-// @failure 500 "Server error"
-// @router /team/{id} [put]
+// PUT request on /api/teams/:id
 func (handler *Handler) teamUpdate(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	teamID, err := request.RetrieveNumericRouteVariableValue(r, "id")
 	if err != nil {

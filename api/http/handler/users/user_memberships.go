@@ -6,24 +6,12 @@ import (
 	httperror "github.com/portainer/libhttp/error"
 	"github.com/portainer/libhttp/request"
 	"github.com/portainer/libhttp/response"
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/http/errors"
 	"github.com/portainer/portainer/api/http/security"
 )
 
-// @id UserMembershipsInspect
-// @summary Inspect a user memberships
-// @description Inspect a user memberships.
-// @description **Access policy**: authenticated
-// @tags users
-// @security jwt
-// @produce json
-// @param id path int true "User identifier"
-// @success 200 {object} portainer.TeamMembership "Success"
-// @failure 400 "Invalid request"
-// @failure 403 "Permission denied"
-// @failure 500 "Server error"
-// @router /users/{id}/memberships [get]
+// GET request on /api/users/:id/memberships
 func (handler *Handler) userMemberships(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	userID, err := request.RetrieveNumericRouteVariableValue(r, "id")
 	if err != nil {

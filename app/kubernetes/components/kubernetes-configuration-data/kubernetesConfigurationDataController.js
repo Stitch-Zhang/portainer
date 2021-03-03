@@ -19,25 +19,16 @@ class KubernetesConfigurationDataController {
     this.showAdvancedMode = this.showAdvancedMode.bind(this);
   }
 
-  onChangeKey(entry) {
-    if (entry.Used) {
-      return;
-    }
-
+  onChangeKey() {
     this.state.duplicateKeys = KubernetesFormValidationHelper.getDuplicates(_.map(this.formValues.Data, (data) => data.Key));
-    this.state.invalidKeys = KubernetesFormValidationHelper.getInvalidKeys(_.map(this.formValues.Data, (data) => data.Key));
-    this.isValid = Object.keys(this.state.duplicateKeys).length === 0 && Object.keys(this.state.invalidKeys).length === 0;
+    this.isValid = Object.keys(this.state.duplicateKeys).length === 0;
   }
 
   addEntry() {
     this.formValues.Data.push(new KubernetesConfigurationFormValuesEntry());
   }
 
-  removeEntry(index, entry) {
-    if (entry.Used) {
-      return;
-    }
-
+  removeEntry(index) {
     this.formValues.Data.splice(index, 1);
     this.onChangeKey();
   }
@@ -95,7 +86,6 @@ class KubernetesConfigurationDataController {
   $onInit() {
     this.state = {
       duplicateKeys: {},
-      invalidKeys: {},
     };
   }
 }

@@ -1,4 +1,4 @@
-import _ from 'lodash-es';
+import * as _ from 'lodash-es';
 import angular from 'angular';
 import PortainerError from 'Portainer/error';
 

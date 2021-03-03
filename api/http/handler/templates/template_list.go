@@ -5,25 +5,9 @@ import (
 	"net/http"
 
 	httperror "github.com/portainer/libhttp/error"
-	portainer "github.com/portainer/portainer/api"
 )
 
-// introduced for swagger
-type listResponse struct {
-	Version   string
-	Templates []portainer.Template
-}
-
-// @id TemplateList
-// @summary List available templates
-// @description List available templates.
-// @description **Access policy**: restricted
-// @tags templates
-// @security jwt
-// @produce json
-// @success 200 {object} listResponse "Success"
-// @failure 500 "Server error"
-// @router /templates [get]
+// GET request on /api/templates
 func (handler *Handler) templateList(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	settings, err := handler.DataStore.Settings().Settings()
 	if err != nil {

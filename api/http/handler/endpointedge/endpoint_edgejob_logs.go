@@ -7,7 +7,7 @@ import (
 	httperror "github.com/portainer/libhttp/error"
 	"github.com/portainer/libhttp/request"
 	"github.com/portainer/libhttp/response"
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 	bolterrors "github.com/portainer/portainer/api/bolt/errors"
 )
 
@@ -19,18 +19,7 @@ func (payload *logsPayload) Validate(r *http.Request) error {
 	return nil
 }
 
-// endpointEdgeJobsLogs
-// @summary Inspect an EdgeJob Log
-// @description
-// @tags edge, endpoints
-// @accept json
-// @produce json
-// @param id path string true "Endpoint Id"
-// @param jobID path string true "Job Id"
-// @success 200
-// @failure 500
-// @failure 400
-// @router /endpoints/{id}/edge/jobs/{jobID}/logs [post]
+// POST request on api/endpoints/:id/edge/jobs/:jobID/logs
 func (handler *Handler) endpointEdgeJobsLogs(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	endpointID, err := request.RetrieveNumericRouteVariableValue(r, "id")
 	if err != nil {

@@ -7,32 +7,17 @@ import (
 	httperror "github.com/portainer/libhttp/error"
 	"github.com/portainer/libhttp/request"
 	"github.com/portainer/libhttp/response"
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 	bolterrors "github.com/portainer/portainer/api/bolt/errors"
 	"github.com/portainer/portainer/api/http/errors"
 	"github.com/portainer/portainer/api/http/security"
-	"github.com/portainer/portainer/api/internal/stackutils"
 )
 
 type stackFileResponse struct {
-	// Content of the Stack file
-	StackFileContent string `json:"StackFileContent" example:"version: 3\n services:\n web:\n image:nginx"`
+	StackFileContent string `json:"StackFileContent"`
 }
 
-// @id StackFileInspect
-// @summary Retrieve the content of the Stack file for the specified stack
-// @description Get Stack file content.
-// @description **Access policy**: restricted
-// @tags stacks
-// @security jwt
-// @produce json
-// @param id path int true "Stack identifier"
-// @success 200 {object} stackFileResponse "Success"
-// @failure 400 "Invalid request"
-// @failure 403 "Permission denied"
-// @failure 404 "Stack not found"
-// @failure 500 "Server error"
-// @router /stacks/{id}/file [get]
+// GET request on /api/stacks/:id/file
 func (handler *Handler) stackFile(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	stackID, err := request.RetrieveNumericRouteVariableValue(r, "id")
 	if err != nil {
@@ -58,7 +43,7 @@ func (handler *Handler) stackFile(w http.ResponseWriter, r *http.Request) *httpe
 		return &httperror.HandlerError{http.StatusForbidden, "Permission denied to access endpoint", err}
 	}
 
-	resourceControl, err := handler.DataStore.ResourceControl().ResourceControlByResourceIDAndType(stackutils.ResourceControlID(stack.EndpointID, stack.Name), portainer.StackResourceControl)
+	resourceControl, err := handler.DataStore.ResourceControl().ResourceControlByResourceIDAndType(stack.Name, portainer.StackResourceControl)
 	if err != nil {
 		return &httperror.HandlerError{http.StatusInternalServerError, "Unable to retrieve a resource control associated to the stack", err}
 	}

@@ -96,7 +96,6 @@ angular.module('portainer.docker').controller('ContainerController', [
             });
           }
 
-          $scope.container.Config.Env = _.sortBy($scope.container.Config.Env, _.toLower);
           const inSwarm = $scope.container.Config.Labels['com.docker.swarm.service.id'];
           const autoRemove = $scope.container.HostConfig.AutoRemove;
           const admin = Authentication.isAdmin();

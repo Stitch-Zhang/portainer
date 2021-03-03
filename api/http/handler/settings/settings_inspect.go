@@ -7,16 +7,7 @@ import (
 	"github.com/portainer/libhttp/response"
 )
 
-// @id SettingsInspect
-// @summary Retrieve Portainer settings
-// @description Retrieve Portainer settings.
-// @description **Access policy**: administrator
-// @tags settings
-// @security jwt
-// @produce json
-// @success 200 {object} portainer.Settings "Success"
-// @failure 500 "Server error"
-// @router /settings [get]
+// GET request on /api/settings
 func (handler *Handler) settingsInspect(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	settings, err := handler.DataStore.Settings().Settings()
 	if err != nil {

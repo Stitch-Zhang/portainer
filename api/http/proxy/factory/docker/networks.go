@@ -4,12 +4,11 @@ import (
 	"context"
 	"net/http"
 
-	portainer "github.com/portainer/portainer/api"
-
 	"github.com/docker/docker/api/types"
 
 	"github.com/docker/docker/client"
 
+	"github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/http/proxy/factory/responseutils"
 	"github.com/portainer/portainer/api/internal/authorization"
 )
@@ -19,15 +18,15 @@ const (
 	networkObjectName       = "Name"
 )
 
-func getInheritedResourceControlFromNetworkLabels(dockerClient *client.Client, endpointID portainer.EndpointID, networkID string, resourceControls []portainer.ResourceControl) (*portainer.ResourceControl, error) {
+func getInheritedResourceControlFromNetworkLabels(dockerClient *client.Client, networkID string, resourceControls []portainer.ResourceControl) (*portainer.ResourceControl, error) {
 	network, err := dockerClient.NetworkInspect(context.Background(), networkID, types.NetworkInspectOptions{})
 	if err != nil {
 		return nil, err
 	}
 
-	stackResourceID := getStackResourceIDFromLabels(network.Labels, endpointID)
-	if stackResourceID != "" {
-		return authorization.GetResourceControlByResourceIDAndType(stackResourceID, portainer.StackResourceControl, resourceControls), nil
+	swarmStackName := network.Labels[resourceLabelForDockerSwarmStackName]
+	if swarmStackName != "" {
+		return authorization.GetResourceControlByResourceIDAndType(swarmStackName, portainer.StackResourceControl, resourceControls), nil
 	}
 
 	return nil, nil

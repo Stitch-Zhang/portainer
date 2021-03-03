@@ -6,19 +6,11 @@ import (
 
 	httperror "github.com/portainer/libhttp/error"
 	"github.com/portainer/libhttp/response"
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 	"github.com/portainer/portainer/api/internal/snapshot"
 )
 
-// @id EndpointSnapshots
-// @summary Snapshot all endpoints
-// @description Snapshot all endpoints
-// @description **Access policy**: administrator
-// @tags endpoints
-// @security jwt
-// @success 204 "Success"
-// @failure 500 "Server Error"
-// @router /endpoints/snapshot [post]
+// POST request on /api/endpoints/snapshot
 func (handler *Handler) endpointSnapshots(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	endpoints, err := handler.DataStore.Endpoint().Endpoints()
 	if err != nil {

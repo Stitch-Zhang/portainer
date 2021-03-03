@@ -8,6 +8,3 @@ api/cmd/portainer/portainer*
 **/.vscode/tasks.json
 
 .eslintcache
-__debug_bin
-
-api/docs

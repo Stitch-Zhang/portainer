@@ -7,7 +7,7 @@ import (
 	httperror "github.com/portainer/libhttp/error"
 	"github.com/portainer/libhttp/request"
 	"github.com/portainer/libhttp/response"
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 	bolterrors "github.com/portainer/portainer/api/bolt/errors"
 )
 
@@ -17,19 +17,7 @@ type taskContainer struct {
 	LogsStatus portainer.EdgeJobLogsStatus `json:"LogsStatus"`
 }
 
-// @id EdgeJobTasksList
-// @summary Fetch the list of tasks on an EdgeJob
-// @description
-// @tags edge_jobs
-// @security jwt
-// @accept json
-// @produce json
-// @param id path string true "EdgeJob Id"
-// @success 200 {array} taskContainer
-// @failure 500
-// @failure 400
-// @failure 503 Edge compute features are disabled
-// @router /edge_jobs/{id}/tasks [get]
+// GET request on /api/edge_jobs/:id/tasks
 func (handler *Handler) edgeJobTasksList(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	edgeJobID, err := request.RetrieveNumericRouteVariableValue(r, "id")
 	if err != nil {

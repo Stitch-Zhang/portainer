@@ -1,4 +1,4 @@
-import _ from 'lodash-es';
+import * as _ from 'lodash-es';
 
 export class KubernetesIngressHelper {
   static findSBoundServiceIngressesRules(ingresses, serviceName) {

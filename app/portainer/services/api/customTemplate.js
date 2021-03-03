@@ -41,8 +41,7 @@ function CustomTemplateServiceFactory(CustomTemplates, FileUploadService) {
 
   service.createCustomTemplateFromFileUpload = async function createCustomTemplateFromFileUpload(payload) {
     try {
-      const { data } = await FileUploadService.createCustomTemplate(payload);
-      return data;
+      return await FileUploadService.createCustomTemplate(payload);
     } catch (err) {
       throw { msg: 'Unable to create the customTemplate', err };
     }

@@ -7,18 +7,15 @@ import (
 	httperror "github.com/portainer/libhttp/error"
 	"github.com/portainer/libhttp/request"
 	"github.com/portainer/libhttp/response"
-	portainer "github.com/portainer/portainer/api"
+	"github.com/portainer/portainer/api"
 	httperrors "github.com/portainer/portainer/api/http/errors"
 	"github.com/portainer/portainer/api/http/security"
 )
 
 type teamMembershipCreatePayload struct {
-	// User identifier
-	UserID int `validate:"required" example:"1"`
-	// Team identifier
-	TeamID int `validate:"required" example:"1"`
-	// Role for the user inside the team (1 for leader and 2 for regular member)
-	Role int `validate:"required" example:"1" enums:"1,2"`
+	UserID int
+	TeamID int
+	Role   int
 }
 
 func (payload *teamMembershipCreatePayload) Validate(r *http.Request) error {
@@ -34,22 +31,7 @@ func (payload *teamMembershipCreatePayload) Validate(r *http.Request) error {
 	return nil
 }
 
-// @id TeamMembershipCreate
-// @summary Create a new team membership
-// @description Create a new team memberships. Access is only available to administrators leaders of the associated team.
-// @description **Access policy**: admin
-// @tags team_memberships
-// @security jwt
-// @accept json
-// @produce json
-// @param body body teamMembershipCreatePayload true "Team membership details"
-// @success 200 {object} portainer.TeamMembership "Success"
-// @success 204 "Success"
-// @failure 400 "Invalid request"
-// @failure 403 "Permission denied to manage memberships"
-// @failure 409 "Team membership already registered"
-// @failure 500 "Server error"
-// @router /team_memberships [post]
+// POST request on /api/team_memberships
 func (handler *Handler) teamMembershipCreate(w http.ResponseWriter, r *http.Request) *httperror.HandlerError {
 	var payload teamMembershipCreatePayload
 	err := request.DecodeAndValidateJSONPayload(r, &payload)
