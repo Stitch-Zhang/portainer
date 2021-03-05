@@ -44,8 +44,9 @@ func initCLI() *portainer.CLIFlags {
 	return flags
 }
 
-//初始化文件服务
+// 初始化文件服务
 func initFileService(dataStorePath string) portainer.FileService {
+	// 传入文件路径创建文件服务
 	fileService, err := filesystem.NewService(dataStorePath, "")
 	if err != nil {
 		log.Fatal(err)
@@ -53,6 +54,7 @@ func initFileService(dataStorePath string) portainer.FileService {
 	return fileService
 }
 
+// 初始化数据储存
 func initDataStore(dataStorePath string, fileService portainer.FileService) portainer.DataStore {
 	store, err := bolt.NewStore(dataStorePath, fileService)
 	if err != nil {
@@ -371,12 +373,12 @@ func terminateIfNoAdminCreated(dataStore portainer.DataStore) {
 }
 
 func main() {
-	//初始化CLI基础服务
-	//flags中存储各种服务所需的参数
+	// 初始化CLI基础服务
+	// flags中存储各种服务所需的参数
 	flags := initCLI()
-	//初始化文件服务
+	// 初始化文件服务
 	fileService := initFileService(*flags.Data)
-
+	// 初始化储存服务
 	dataStore := initDataStore(*flags.Data, fileService)
 	defer dataStore.Close()
 

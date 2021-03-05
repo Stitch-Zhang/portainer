@@ -9,7 +9,7 @@ import (
 	"io/ioutil"
 
 	"github.com/gofrs/uuid"
-	"github.com/portainer/portainer/api"
+	portainer "github.com/portainer/portainer/api"
 
 	"io"
 	"os"
@@ -54,6 +54,7 @@ const (
 var ErrUndefinedTLSFileType = errors.New("Undefined TLS file type")
 
 // Service represents a service for managing files and directories.
+// 服务即定义数据路径和数据文件存放的相对路径
 type Service struct {
 	dataStorePath string
 	fileStorePath string
@@ -61,27 +62,33 @@ type Service struct {
 
 // NewService initializes a new service. It creates a data directory and a directory to store files
 // inside this directory if they don't exist.
+// 实例化一个文件服务，若数据目录不存在则创建
+// dataStorePath:数据存储路径
+// fileStorePath:数据文件存储在路径里面的相对路径
 func NewService(dataStorePath, fileStorePath string) (*Service, error) {
+	//声明服务
 	service := &Service{
 		dataStorePath: dataStorePath,
+		// 文件存放拼接路径
 		fileStorePath: path.Join(dataStorePath, fileStorePath),
 	}
-
+	// 创建文件夹,成功返回nil
+	// 文件夹在创建之前存在也算
 	err := os.MkdirAll(dataStorePath, 0755)
 	if err != nil {
 		return nil, err
 	}
-
+	// 创建TLS证书储存目录
 	err = service.createDirectoryInStore(TLSStorePath)
 	if err != nil {
 		return nil, err
 	}
-
+	// 创建Compose目录
 	err = service.createDirectoryInStore(ComposeStorePath)
 	if err != nil {
 		return nil, err
 	}
-
+	// 创建二进制文件目录
 	err = service.createDirectoryInStore(BinaryStorePath)
 	if err != nil {
 		return nil, err
@@ -342,6 +349,8 @@ func (service *Service) LoadKeyPair() ([]byte, []byte, error) {
 }
 
 // createDirectoryInStore creates a new directory in the file store
+// 在数据储存目录中创建目录
+// 创建成功或文件夹存在则返回nil
 func (service *Service) createDirectoryInStore(name string) error {
 	path := path.Join(service.fileStorePath, name)
 	return os.MkdirAll(path, 0700)

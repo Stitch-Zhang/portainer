@@ -20,9 +20,13 @@ import (
 type Service struct{}
 
 var (
-	errInvalidEndpointProtocol       = errors.New("Invalid endpoint protocol: Portainer only supports unix://, npipe:// or tcp://")
-	errSocketOrNamedPipeNotFound     = errors.New("Unable to locate Unix socket or named pipe")
-	errInvalidSnapshotInterval       = errors.New("Invalid snapshot interval")
+	// 无效的端点协议
+	errInvalidEndpointProtocol = errors.New("Invalid endpoint protocol: Portainer only supports unix://, npipe:// or tcp://")
+	// Socket或管道不存在
+	errSocketOrNamedPipeNotFound = errors.New("Unable to locate Unix socket or named pipe")
+	// 无效的快照间隔
+	errInvalidSnapshotInterval = errors.New("Invalid snapshot interval")
+	// 密码冲突
 	errAdminPassExcludeAdminPassFile = errors.New("Cannot use --admin-password with --admin-password-file")
 )
 
